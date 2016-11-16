@@ -1,10 +1,19 @@
 import processing.video.*;
+import ddf.minim.spi.*;
+import ddf.minim.signals.*;
+import ddf.minim.*;
+import ddf.minim.analysis.*;
+import ddf.minim.ugens.*;
+import ddf.minim.effects.*;
 
+Minim minim;
+AudioPlayer player;
+AudioInput audioInput;
 Capture video; 
 
-float[][] kernel = {{ -1, 0, 1}, 
-                    { -2, 0, 2}, 
-                    { -1, 0, 1}};
+float[][] kernel = {{ 1, 2, 1}, 
+                    { 0, 0, 0}, 
+                    { -1, -2, -1}};
 
 void setup(){
   size(640, 480);
