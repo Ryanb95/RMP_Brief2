@@ -7,19 +7,16 @@ import ddf.minim.ugens.*;
 import ddf.minim.effects.*;
 
 Minim minim;
-AudioPlayer player;
 AudioInput audioInput;
 Capture video; 
 
-float[][] kernel = {{ 1, 2, 1}, 
-                    { 0, 0, 0}, 
-                    { -1, -2, -1}};
 
 void setup(){
   size(640, 480);
-  video = new Capture(this, width, height);
+  video = new Capture(this, width, height, 30);
   video.start();
-  frameRate(30);
+  minim = new Minim(this);
+  audioInput = minim.getLineIn();
 }
 
 void draw(){
@@ -30,23 +27,34 @@ void draw(){
   video.loadPixels();
   image(video, 0, 0);
   
-  PImage sobel = createImage(video.width, video.height, RGB);
-  
-  for (int y = 1; y < video.height-1; y++){
-    for (int x = 1; x < video.width-1; x++){
-      float sum = 0;
-      for (int sy = -1; sy <= 1; sy++){
-        for (int sx = -1; sx <= 1; sx++){
-          int pos = (y + sy) * video.width + (x + sx);
-          float val = red(video.pixels[pos]);
-          sum += kernel[sy+1][sx+1] * val;
-        }
-      }
+  if(audioInput.left.level()*100 >= 15){
+      for (int y = 0; y < video.height; y+=10 ) {
+    for (int x = 0; x < video.width; x+=10 ) {
+
+      int imgloc = x + y*video.width;
       
-      sobel.pixels[y*video.width + x] = color(sum, sum, sum);
+      float r = red(video.pixels[imgloc]);
+      float g = green(video.pixels[imgloc]);
+      float b = blue(video.pixels[imgloc]);
+      fill(r,g,b, 130);
+      noStroke();
+      int choice = (int)random(2);
+      
+      int shapeX, shapeY;
+      shapeX = x + (width - video.width)/2;
+      shapeY = y + (height - video.height)/2;
+
+      shapeX += random(-5,5);
+      shapeY += random(-5,5);
+      
+      if (choice == 0) {
+        ellipse(shapeX, shapeY,random(5,20), random(5, 20));
+      }
+      else
+      {
+        rect(shapeX,shapeY,random(5,20), random(5,20));
+      }
     }
   }
-  
-  sobel.updatePixels();
-  image(sobel, 0, 0);
+  }
 }
