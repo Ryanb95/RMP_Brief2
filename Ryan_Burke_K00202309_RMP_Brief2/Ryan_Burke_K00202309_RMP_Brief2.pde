@@ -50,7 +50,7 @@ void draw(){
   image(video, 0, 0);
  
   if(mousePressed){
-      for (int y = 0; y < video.height; y+=4 ) {
+      for (int y = 0; y < video.height; y+=5 ) {
         if(currentImage < frames.size()){
           PImage image = (PImage)frames.get(currentImage);
           
@@ -62,6 +62,7 @@ void draw(){
               pixels[x + (y + 1) * width] = image.pixels[x + (y + 1) * video.width];
               pixels[x + (y + 2) * width] = image.pixels[x + (y + 2) * video.width];
               pixels[x + (y + 3) * width] = image.pixels[x + (y + 3) * video.width];
+              pixels[x + (y + 4) * width] = image.pixels[x + (y + 3) * video.width];
             }
           }
           
@@ -75,5 +76,37 @@ void draw(){
   }
   
   updatePixels();
+  }
+  
+  if(((audioInput.left.level()*100) > 20)){
+    for (int y = 0; y < video.height; y+=10 ) {
+    for (int x = 0; x < video.width; x+=10 ) {
+      
+      int imgloc = x + y*video.width;
+      
+      float r = red(video.pixels[imgloc]);
+      float g = green(video.pixels[imgloc]);
+      float b = blue(video.pixels[imgloc]);
+
+      fill(r,g,b, 130);
+      noStroke();
+      int choice = (int)random(2);
+      
+      int shapeX, shapeY;
+      shapeX = x + (width - video.width)/2;
+      shapeY = y + (height - video.height)/2;
+      
+      shapeX += random(-5,5);
+      shapeY += random(-5,5);
+      
+      if (choice == 0) {
+        ellipse(shapeX, shapeY,random(5,15), random(5,15));
+      }
+      else
+      {
+        rect(shapeX,shapeY,random(5,15), random(5,15));
+      }
+    }
+  }
   }
 }
