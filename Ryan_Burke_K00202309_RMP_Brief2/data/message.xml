@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
 	<instruction>
 		<message text='Hold mouse for manipulation!'></message>
+                <message text='Make noise for graphics!'></message>
 	</instruction>
